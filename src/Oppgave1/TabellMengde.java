@@ -33,7 +33,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	@Override
 	public boolean inneholder(T element) {
 		
-		for (int i = 0; i < tab.length; i++) {
+		for (int i = 0; i < antall; i++) {
 			if(tab[i].equals(element)) {
 				return true;
 			}
@@ -45,7 +45,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	@Override
 	public boolean erDelmengdeAv(MengdeADT<T> annenMengde) {
 	
-	for (int i = 0; i < tab.length; i++) {
+	for (int i = 0; i < antall; i++) {
 		if(!annenMengde.inneholder(tab[i])) {
 			return false;
 		}
@@ -66,7 +66,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		}
 		
 	
-		for (int i = 0; i < tab.length; i++) {
+		for (int i = 0; i < antall; i++) {
 			if(!annenMengde.inneholder(tab[i])) {
 				return false;
 			}
@@ -81,7 +81,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	@Override
 	public boolean erDisjunkt(MengdeADT<T> annenMengde) {
 		
-		for (int i = 0; i < tab.length; i++) {
+		for (int i = 0; i < antall; i++) {
 			if(annenMengde.inneholder(tab[i])) {
 				return false;
 			}
@@ -131,8 +131,15 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public MengdeADT<T> minus(MengdeADT<T> annenMengde) {
-		// TODO Auto-generated method stub
-		return null;
+	    MengdeADT<T> result = new TabellMengde<>();
+
+	    for (int i = 0; i < antall; i++) {
+	        if (!annenMengde.inneholder(tab[i])) {
+	            result.leggTil(tab[i]);
+	        }
+	    }
+
+	    return result;
 	}
 
 	@Override
@@ -166,8 +173,23 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public T fjern(T element) {
-		// TODO Auto-generated method stub
+		
+		for (int i = 0; i < antall; i++) {
+			if(tab[i].equals(element)) {
+				T temp = tab[i];
+				
+				
+				for (int j = i; j < antall-1; i++) {
+					tab[j] = tab[j+1];
+				}
+				tab[antall-1] = null;
+				antall--;
+				return temp;
+				
+			}
+		}
 		return null;
+		
 	}
 
 	@Override
@@ -177,8 +199,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public int antallElementer() {
-		// TODO Auto-generated method stub
-		return 0;
+		return antall;
 	}
 
 }
