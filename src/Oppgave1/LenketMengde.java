@@ -1,7 +1,8 @@
 package Oppgave1;
 
+import dat102.uke89.oppg1_mengder.LenketMengde.Node;
 
-	public class LenketMengde<T> implements MengdeADT<T> {
+public class LenketMengde<T> implements MengdeADT<T> {
 
 		private class Node {
 			private T data;
@@ -48,7 +49,7 @@ package Oppgave1;
 				if (!annenMengde.inneholder(ny.data)) {
 					return false;
 				}
-				ny = ny.neste; // Oppdater ny til neste node
+				ny = ny.neste; 
 			}
 			return true;
 
@@ -60,11 +61,11 @@ package Oppgave1;
 			Node ny = forste;
 
 			while (ny != null) {
-				// Sjekk om annenMengde ikke inneholder elementet
+				
 				if (!annenMengde.inneholder(ny.data) || antall != annenMengde.antallElementer()) {
 					return false;
 				}
-				ny = ny.neste; // Oppdater ny til neste node
+				ny = ny.neste; 
 			}
 
 			return true;
@@ -132,6 +133,11 @@ package Oppgave1;
 
 		@Override
 		public void leggTil(T element) {
+			
+			Node ny = new Node(element);
+			ny.neste = forste;
+			forste = ny;
+			antall++;
 
 		}
 
@@ -171,4 +177,4 @@ package Oppgave1;
 		}
 	}
 
-}
+
