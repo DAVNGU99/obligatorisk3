@@ -171,4 +171,4 @@ package Oppgave1;
 		}
 	}
 
-}
+
