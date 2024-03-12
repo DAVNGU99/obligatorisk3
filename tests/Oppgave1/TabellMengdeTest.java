@@ -24,7 +24,7 @@ public class TabellMengdeTest {
 	@BeforeEach
 	void setUp() {
 		
-		tomTabell = new TabellMengde<>();
+		tomTabell = new TabellMengde<>(2);
 		tabellMedToElementer = new TabellMengde<>(5); 
 		tabellMedFemElementer = new TabellMengde<>(5);
 		tabellMedIngentingTilFelles = new TabellMengde<>(5);
@@ -136,8 +136,48 @@ public class TabellMengdeTest {
 		assertTrue(minus.inneholder(1));
 		assertTrue(minus.inneholder(2));
 		assertTrue(minus.inneholder(4));
+		
 		assertFalse(minus.inneholder(3));
 		assertFalse(minus.inneholder(5));
+		
+	
+	}
+	
+	@Test
+	void leggTil() {
+		
+		tomTabell.leggTil(1);
+		tomTabell.leggTil(2);
+		tomTabell.leggTil(3);
+		tomTabell.leggTil(4);
+		
+		assertEquals(4, tomTabell.antallElementer());
+	}
+
+	
+	@Test
+	void leggTilAlleFra() {
+		
+		tabellMedToElementer.leggTilAlleFra(tabellMedFemElementer);
+		assertEquals(5, tabellMedToElementer.antallElementer());
+		tabellMedToElementer.leggTilAlleFra(tomTabell);
+		assertEquals(5, tabellMedToElementer.antallElementer());
+		
+		tabellMedToElementer.leggTilAlleFra(tabellMedIngentingTilFelles);
+		assertEquals(7, tabellMedToElementer.antallElementer());
+	}
+
+	@Test
+	void testFjernElement() {
+		
+		tabellMedToElementer.fjern(3);
+		
+		assertEquals(1, tabellMedToElementer.antallElementer());
+		assertFalse(tabellMedToElementer.inneholder(3));
+		
+		tabellMedToElementer.fjern(5);
+		
+		assertTrue(tabellMedToElementer.erTom());
 		
 		
 		
@@ -145,7 +185,16 @@ public class TabellMengdeTest {
 	
 	
 	@Test
-	void tes
+	void testAntallElementer() {
+		
+		assertEquals(2, tabellMedToElementer.antallElementer());
+		assertEquals(5, tabellMedFemElementer.antallElementer());
+		assertEquals(0, tomTabell.antallElementer());
+		
+		tomTabell.leggTil(3);
+		
+		assertEquals(1, tomTabell.antallElementer());
+	}
 	
 	
 	

@@ -146,7 +146,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	public void leggTil(T element) {
 		
 		if(antall == tab.length) {
-			tab = Arrays.copyOf(tab, tab.length*2);
+			ensureCapcity();
 		}
 		
 		
@@ -157,18 +157,13 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public void leggTilAlleFra(MengdeADT<T> annenMengde) {
-		
-		T[] temp = annenMengde.tilTabell();
-		
-		
-		for (int i = 0; i < temp.length; i++) {
-			
-			if(!inneholder(tab[i])) {
-				leggTil(temp[i]);
-			}
-			
-		}
-		
+	    T[] temp = annenMengde.tilTabell();
+
+	    for (int i = 0; i < temp.length; i++) {
+	        if (!inneholder(temp[i])) {
+	            leggTil(temp[i]);
+	        }
+	    }
 	}
 
 	@Override
@@ -179,7 +174,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 				T temp = tab[i];
 				
 				
-				for (int j = i; j < antall-1; i++) {
+				for (int j = i; j < antall-1; j++) {
 					tab[j] = tab[j+1];
 				}
 				tab[antall-1] = null;
@@ -201,5 +196,13 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	public int antallElementer() {
 		return antall;
 	}
+	
+	
+	private void ensureCapcity() {
+	    T[] nyTab = (T[]) new Object[tab.length * 2]; // Double the capacity
+	    System.arraycopy(tab, 0, nyTab, 0, tab.length); // Copy elements to the new array
+	    tab = nyTab; // Update the reference to the new array
+	}
+	
 
 }
