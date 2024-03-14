@@ -1,6 +1,5 @@
 package Oppgave1;
 
-import dat102.uke89.oppg1_mengder.LenketMengde.Node;
 
 public class LenketMengde<T> implements MengdeADT<T> {
 
@@ -42,34 +41,41 @@ public class LenketMengde<T> implements MengdeADT<T> {
 		}
 
 		@Override
-		public boolean erDelmengdeAv(MengdeADT<T> annenMengde) {
-			Node ny = forste;
+	    public boolean erDelmengdeAv(MengdeADT<T> annenMengde) {
 
-			while (ny != null) {
-				if (!annenMengde.inneholder(ny.data)) {
-					return false;
-				}
-				ny = ny.neste; 
-			}
-			return true;
+	        int antFelles = 0;
 
-		}
+	        Node ny = forste;
+
+	        while (ny != null) {
+	            if (annenMengde.inneholder(ny.data)) {
+	                antFelles++;
+	            }
+	            ny = ny.neste;
+	        }
+
+	        return antFelles == antall;
+
+	    }
 
 		@Override
-		public boolean erLik(MengdeADT<T> annenMengde) {
+	    public boolean erLik(MengdeADT<T> annenMengde) {
 
-			Node ny = forste;
+	        if (annenMengde == null || this == null || antall != annenMengde.antallElementer()) {
+	            return false;
+	        }
 
-			while (ny != null) {
-				
-				if (!annenMengde.inneholder(ny.data) || antall != annenMengde.antallElementer()) {
-					return false;
-				}
-				ny = ny.neste; 
-			}
+	        Node ny = forste;
+	        while (ny != null) {
+	            if (!annenMengde.inneholder(ny.data)) {
+	                return false;
+	            }
+	            ny = ny.neste;
+	        }
 
-			return true;
-		}
+	        return true;
+
+	    }
 
 		@Override
 		public boolean erDisjunkt(MengdeADT<T> annenMengde) {
@@ -113,23 +119,21 @@ public class LenketMengde<T> implements MengdeADT<T> {
 		}
 
 		@Override
-		public MengdeADT<T> minus(MengdeADT<T> annenMengde) {
-			TabellMengde<T> temp = new TabellMengde<>();
+	    public MengdeADT<T> minus(MengdeADT<T> annenMengde) {
 
-			if (this.erLik(annenMengde)) {
-				return temp;
-			}
+	        TabellMengde<T> temp = new TabellMengde<>();
 
-			Node ny = forste;
+	        Node ny = forste;
 
-			while (ny != null) {
+	        while (ny != null) {
 
-				if (annenMengde.inneholder(ny.data)) {
-					temp.leggTil(ny.data);
-				}
-			}
-			return temp;
-		}
+	            if (!annenMengde.inneholder(ny.data)) {
+	                temp.leggTil(ny.data);
+	            }
+	            ny = ny.neste;
+	        }
+	        return temp;
+	    }
 
 		@Override
 		public void leggTil(T element) {
@@ -142,16 +146,46 @@ public class LenketMengde<T> implements MengdeADT<T> {
 		}
 
 		@Override
-		public void leggTilAlleFra(MengdeADT<T> annenMengde) {
-			
+	    public void leggTilAlleFra(MengdeADT<T> annenMengde) {
+	        if (annenMengde.erTom()) {
+	            return;
+	        }
 
-		}
+	        Node ny = ((LenketMengde<T>) annenMengde).forste;
+
+	        while (ny != null) {
+	            if (!this.inneholder(ny.data)) {
+	                this.leggTil(ny.data);
+	            }
+	            ny = ny.neste;
+	        }
+
+	    }
 
 		@Override
-		public T fjern(T element) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+	    public T fjern(T element) {
+	        T temp;
+	        if (forste == null)
+	            return null;
+	        else if (forste.data.equals(element)) {
+	            temp = forste.data;
+	            forste = forste.neste;
+	            antall--;
+	            return temp;
+	        }
+	        Node ny = forste;
+	        while (ny.neste != null) {
+	            if (ny.neste.data.equals(element)) {
+	                temp = ny.neste.data;
+	                ny.neste = ny.neste.neste;
+	                antall--;
+	                return temp;
+	            }
+	            ny = ny.neste;
+	        }
+
+	        return null;
+	    }
 
 		@Override
 		public T[] tilTabell() {
